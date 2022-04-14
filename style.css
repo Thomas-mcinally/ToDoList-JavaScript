@@ -1,0 +1,6 @@
+body {
+    background-image: linear-gradient(120deg, #d6b959f5, #d38069);
+    color: rgb(255, 255, 255);
+    font-family: "Poppins", sans-serif;
+    min-height: 100vh
+}
