@@ -1,86 +1,122 @@
-//Selectors
+//SELECTORS
 const todoInput = document.querySelector('.todo-input');
 const todoButton = document.querySelector('.todo-button');
 const todoList = document.querySelector('.todo-list');
-const filterOption = document.querySelector('.filter-todo')
+const filterOption = document.querySelector('.filter-todo');
 
-//Event Listeners
-todoButton.addEventListener('click', addTodo);
-todoList.addEventListener('click', deleteCheck)
-filterOption.addEventListener('click', filterTodo)
+//EVENT LISTENERS
+document.addEventListener('DOMContentLoaded', getSavedTodos);
+todoButton.addEventListener('click', newTodo);
+todoList.addEventListener('click', updateTodoStatus);
+filterOption.addEventListener('click', filterTodo);
 
 //Functions
-function addTodo(event){
-    //prevent form from submitting 
-    event.preventDefault();
-    //Todo DIV
+function addItemToTodoListHTML(item) {
+    //OUTER DIV
     const todoDiv = document.createElement('div');
     todoDiv.classList.add('todo');
-    //Create LI
+    //LI
     const newTodo = document.createElement('li');
-    newTodo.innerText = todoInput.value
+    newTodo.innerText = item;
     newTodo.classList.add('todo-item');
     todoDiv.appendChild(newTodo);
     //CHECK MARK BUTTON
     const completedButton = document.createElement('button');
-    completedButton.innerHTML = '<i class="fas fa-check"></i>'
+    completedButton.innerHTML = '<i class="fas fa-check"></i>';
     completedButton.classList.add("complete-btn");
-    todoDiv.appendChild(completedButton)
+    todoDiv.appendChild(completedButton);
     //TRASH BUTTON
     const thrashButton = document.createElement('button');
-    thrashButton.innerHTML = '<i class="fas fa-trash"></i>'
+    thrashButton.innerHTML = '<i class="fas fa-trash"></i>';
     thrashButton.classList.add("trash-btn");
-    todoDiv.appendChild(thrashButton)
-    //APPEND TO TODO-LIST
-    todoList.appendChild(todoDiv)
+    todoDiv.appendChild(thrashButton);
+    //INSERT DIV INTO CORRECT PART OF HTML
+    todoList.appendChild(todoDiv);
 }
 
-function deleteCheck(event){
+function newTodo(event) {
+    //DEFAULT BEHAVIOUR IS TO SUBMIT FORM AND RELOAD PAGE
+    event.preventDefault();
+    if (todoInput.value == '') {return;}
+
+    addItemToTodoListHTML(todoInput.value);
+    saveTodosLocally(todoInput.value);
+    todoInput.value = '';
+}
+
+function updateTodoStatus(event) {
     const item = event.target;
 
-    //DELETE TODO
-    if(item.className == 'trash-btn'){
+    //DELETE
+    if (item.className == 'trash-btn') {
         const todo = item.parentElement;
-        //animation
+        //ANIMATION
         todo.classList.add('fall');
-        todo.addEventListener('transitionend', function(){
+        removeSavedTodo(todo);
+        todo.addEventListener('transitionend', function() {
+            //ANIMATION FINISHED
             todo.remove();
         })
-
     }
 
-    //CHECK MARK TODO
-    if(item.className == 'complete-btn'){
+    //MARK COMPLETED
+    if (item.className == 'complete-btn') {
         const todo = item.parentElement;
-        todo.classList.toggle("completed")
+        todo.classList.toggle("completed");
     }
-
 }
 
 function filterTodo(event) {
     const todos = todoList.childNodes;
-    console.log(todos)
-    todos.forEach(function(todo){
-        console.log(event.target.value)
-        console.log(todo)
-        console.log(todo.classList)
-        switch(event.target.value){
+    todos.forEach(function(todo) {
+        switch(event.target.value) {
             case "all":
-                todo.style.display = 'flex'
+                todo.style.display = 'flex';
                 break;
             case "completed":
-                if(todo.classList.contains('completed')){
+                if (todo.classList.contains('completed')) {
                     todo.style.display = 'flex';
                 } else {
                     todo.style.display = "none";
                 }
                 break;
             case "uncompleted":
-                if(!todo.classList.contains('completed')){
+                if (!todo.classList.contains('completed')) {
                     todo.style.display = 'flex';
                 } else {
                     todo.style.display = "none";
                 }
         }
     });
+}
+
+function fetchSavedTodos() {
+    let todos;
+    if (localStorage.getItem('todos') === null) {
+        todos = [];
+    } else {
+        todos = JSON.parse(localStorage.getItem('todos'));
+    }
+    return todos;
+}
+
+function saveTodosLocally(todo) {
+    let todos;
+    todos = fetchSavedTodos();
+    todos.push(todo);
+    localStorage.setItem('todos', JSON.stringify(todos));
+}
+
+function getSavedTodos() {
+    let todos;
+    todos = fetchSavedTodos();
+    todos.forEach(addItemToTodoListHTML);
+}
+
+function removeSavedTodo(todo) {
+    let todos;
+    todos = fetchSavedTodos();
+    const itemToRemove = todo.children[0].innerText;
+    todos.splice(todos.indexOf(itemToRemove), 1);
+    localStorage.setItem('todos', JSON.stringify(todos))
 }
