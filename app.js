@@ -167,9 +167,8 @@ function getSavedTodosStatus() {
   todos_status = fetchSavedTodosStatus();
 
   for (let i = 0; i < todos_status.length; i++) {
-    if (todos_status[i] != 1) {
-      return;
+    if (todos_status[i] == 1) {
+      todoList.children[i].classList.toggle("completed");
     }
-    todoList.children[i].classList.toggle("completed");
   }
 }
