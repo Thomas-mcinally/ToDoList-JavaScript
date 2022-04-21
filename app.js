@@ -32,7 +32,8 @@ function addItemToTodoListHTML(item) {
   thrashButton.classList.add("trash-btn");
   todoDiv.appendChild(thrashButton);
   //INSERT DIV INTO CORRECT PART OF HTML
-  todoList.appendChild(todoDiv);
+  todoList.insertBefore(todoDiv, todoList.firstChild);
+  //todoList.appendChild(todoDiv);
 }
 
 function newTodo(event) {
@@ -168,7 +169,8 @@ function getSavedTodosStatus() {
 
   for (let i = 0; i < todos_status.length; i++) {
     if (todos_status[i] == 1) {
-      todoList.children[i].classList.toggle("completed");
+      index_of_child_to_toggle = todos_status.length - i - 1; //new todos are appended to start of todoList
+      todoList.children[index_of_child_to_toggle].classList.toggle("completed");
     }
   }
 }
