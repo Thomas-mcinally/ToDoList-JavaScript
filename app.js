@@ -3,6 +3,8 @@ const todoInput = document.querySelector(".todo-input");
 const todoButton = document.querySelector(".todo-button");
 const todoList = document.querySelector(".todo-list");
 const filterOption = document.querySelector(".filter-todo");
+const colourOption = document.querySelector(".change-colour");
+const bodyTag = document.getElementsByTagName("body")
 
 //EVENT LISTENERS
 document.addEventListener("DOMContentLoaded", getSavedTodos);
@@ -10,6 +12,8 @@ document.addEventListener("DOMContentLoaded", getSavedTodosStatus);
 todoButton.addEventListener("click", newTodo);
 todoList.addEventListener("click", updateTodoStatus);
 filterOption.addEventListener("click", filterTodo);
+colourOption.addEventListener("click", changeBackgroundColour);
+
 
 //Functions
 function addItemToTodoListHTML(item) {
@@ -84,30 +88,6 @@ function updateTodoStatus(event) {
   }
 }
 
-function filterTodo(event) {
-  const todos = todoList.childNodes;
-  todos.forEach(function (todo) {
-    switch (event.target.value) {
-      case "all":
-        todo.style.display = "flex";
-        break;
-      case "completed":
-        if (todo.classList.contains("completed")) {
-          todo.style.display = "flex";
-        } else {
-          todo.style.display = "none";
-        }
-        break;
-      case "uncompleted":
-        if (!todo.classList.contains("completed")) {
-          todo.style.display = "flex";
-        } else {
-          todo.style.display = "none";
-        }
-    }
-  });
-}
-
 function fetchSavedTodosStatus() {
   let todos_status;
   if (localStorage.getItem("todos_status") === null) {
@@ -172,5 +152,41 @@ function getSavedTodosStatus() {
       index_of_child_to_toggle = todos_status.length - i - 1; //new todos are appended to start of todoList
       todoList.children[index_of_child_to_toggle].classList.toggle("completed");
     }
+  }
+}
+
+function filterTodo(event) {
+  const todos = todoList.childNodes;
+  todos.forEach(function (todo) {
+    switch (event.target.value) {
+      case "all":
+        todo.style.display = "flex";
+        break;
+      case "completed":
+        if (todo.classList.contains("completed")) {
+          todo.style.display = "flex";
+        } else {
+          todo.style.display = "none";
+        }
+        break;
+      case "uncompleted":
+        if (!todo.classList.contains("completed")) {
+          todo.style.display = "flex";
+        } else {
+          todo.style.display = "none";
+        }
+    }
+  });
+}
+
+function changeBackgroundColour() {
+  if (bodyTag[0].classList.value == 'dark_theme') {
+    bodyTag[0].classList.value = 'light_theme';
+    return
+  }
+
+  if (bodyTag[0].classList.value == 'light_theme') {
+    bodyTag[0].classList.value = 'dark_theme';
+    return
   }
 }

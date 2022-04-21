@@ -4,18 +4,34 @@
     box-sizing: border-box;
 }
 
-body {
-    background-image: linear-gradient(120deg, #d6b959f5, #d38069);
+body{
     min-height: 100vh;
     color: rgb(255, 255, 255);
     font-family: "Poppins", sans-serif;
+}
+
+.light_theme{
+    background-image: linear-gradient(120deg, #d6b959f5, #d38069);
+}
+
+.dark_theme{
+    background-image: linear-gradient(120deg, #2c0431f5, #0a0111);
+}
+
+.select_colour button{
+    color:#c5c6cc;
+    background: rgba(36, 8, 161, 0);
+    cursor: pointer; 
+    padding: 2rem;
+    font-size: 2rem;
+    border: none;
 }
 
 header{
     font-size: 1.5rem;
 }
 
-header, form {
+header, form{
     min-height: 20vh;
     display: flex;
     justify-content: center;
