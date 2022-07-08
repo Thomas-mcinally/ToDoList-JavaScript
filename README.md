@@ -1,2 +1,2 @@
 **Try it out for yourself:**
-http://todolist.thomasmcinally.com/
+https://thomas-mcinally.github.io/ToDoList-JavaScript/
